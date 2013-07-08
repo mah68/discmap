@@ -1,0 +1,73 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".HoleActivity" >
+	
+    <LinearLayout
+        android:layout_width="fill_parent"
+   		android:layout_height="wrap_content"
+   		android:paddingLeft="2dp"
+   		android:paddingRight="2dp"
+   		android:orientation="horizontal">
+   		
+        <Button 
+            android:id="@+id/holePrevButton"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight=".25"
+	        android:text="Prev"/>
+        
+	    <LinearLayout
+	        android:layout_width="0dp"
+	   		android:layout_height="fill_parent"
+	   		android:layout_weight=".5"
+	   		android:orientation="vertical">
+	    	<TextView
+		        android:id="@+id/holeCourseTitleView"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+		        android:text="Course Title" />
+		    <TextView
+		        android:id="@+id/holeNumberView"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+		        android:textAppearance="?android:attr/textAppearanceMedium"
+		        android:text="Hole #X" />
+	    
+	    </LinearLayout>
+	    
+	    <Button 
+            android:id="@+id/holeNextButton"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight=".25"
+	        android:text="Next"/>
+    </LinearLayout>
+    
+    <fragment
+        android:id="@+id/holeMap"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="316dp"
+        map:mapType="satellite"
+        map:uiCompass="true"
+        map:uiRotateGestures="true"
+        map:uiScrollGestures="true"
+        map:uiTiltGestures="false"
+        map:uiZoomControls="true"
+        map:uiZoomGestures="true" />
+
+    <ScrollView
+        android:id="@+id/holeScoreScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+    </ScrollView>
+
+</LinearLayout>
