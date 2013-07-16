@@ -15,6 +15,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class HoleActivity extends Activity {
 	
@@ -56,6 +57,10 @@ public class HoleActivity extends Activity {
 		
 		LatLng neBound = new LatLng(Math.max(tee[0], hole[0]), Math.max(tee[1],hole[1]));
 		LatLng swBound = new LatLng(Math.min(tee[0], hole[0]), Math.min(tee[1],hole[1]));
+		
+		map.addPolyline(new PolylineOptions().add(teeCoords,holeCoords)
+				.width(Constants.LINE_WIDTH)
+				.color(Constants.LINE_COLOR));
 		
 		LatLngBounds bounds = new LatLngBounds(swBound, neBound);
 		map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 75));
