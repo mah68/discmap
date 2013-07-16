@@ -30,45 +30,15 @@ public class ServerCreateAccountTask extends AsyncTask<String, Void, String> {
 
 	@Override
 	protected String doInBackground(String... params) {
-		AlertDialogManager alert = new AlertDialogManager();
 		final String user = params[0];
 		final String pass = params[1];
 		
-		String result = null;
-		InputStream is = null;
-		StringBuilder sb = null;
+		HttpStringPoster poster = new HttpStringPoster(Constants.serverURL+"users.php/create");
 		
-		try {
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost httppost = new HttpPost(Constants.serverURL+"index.php/create");
-			httppost.setEntity(new UrlEncodedFormEntity(new ArrayList<BasicNameValuePair>() {{
-				add(new BasicNameValuePair("user",user));
-				add(new BasicNameValuePair("password",pass));
-			}}));
-			HttpResponse response = httpclient.execute(httppost);
-			HttpEntity entity = response.getEntity();
-			is = entity.getContent();
-		} catch (Exception e) {
-			Log.e("log_tag", "Error in http connection " + e.toString());
-			alert.showAlertDialog(parent.getApplicationContext(), "Network error", "Error connecting to server. " +
-					"Please check your network connection and try again.", null);
-		}
-		
-		// convert response to string
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					is, "iso-8859-1"), 8);
-			sb = new StringBuilder();
-			sb.append(reader.readLine());
-			is.close();
-			result = sb.toString();
-
-		} catch (Exception e) {
-			Log.e("log_tag", "Error converting result " + e.toString());
-		}
-		
-		if (result == null) result = "";
-		return result;
+		return poster.execute(new ArrayList<BasicNameValuePair>() {{
+			add(new BasicNameValuePair("user",user));
+			add(new BasicNameValuePair("password",pass));
+		}});
 	}
 	
 	@Override

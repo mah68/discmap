@@ -31,50 +31,15 @@ public class ServerHoleInfoTask extends AsyncTask<Integer,Void,String> {
 
 	@Override
 	protected String doInBackground(Integer... params) {
-		AlertDialogManager alert = new AlertDialogManager();
 		final String course = String.valueOf(params[0]);
 		final String hole = String.valueOf(params[1]);
 		
-		String result = null;
-		InputStream is = null;
-		StringBuilder sb = null;
+		HttpStringPoster poster = new HttpStringPoster(Constants.serverURL+"courses.php/hole");
 		
-		try {
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost httppost = new HttpPost(Constants.serverURL+"index.php/hole");
-			httppost.setEntity(new UrlEncodedFormEntity(new ArrayList<BasicNameValuePair>() {{
-				add(new BasicNameValuePair("course",course));
-				add(new BasicNameValuePair("hole",hole));
-			}}));
-			HttpResponse response = httpclient.execute(httppost);
-			HttpEntity entity = response.getEntity();
-			is = entity.getContent();
-		} catch (Exception e) {
-			Log.e("log_tag", "Error in http connection " + e.toString());
-			alert.showAlertDialog(parent.getApplicationContext(), "Network error", "Error connecting to server. " +
-					"Please check your network connection and try again.", null);
-		}
-		
-		// convert response to string
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-            sb = new StringBuilder();
-            sb.append(reader.readLine() + "\n");
-            String line="0";
-          
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-             
-            is.close();
-            result=sb.toString();
-
-		} catch (Exception e) {
-			Log.e("log_tag", "Error converting result " + e.toString());
-		}
-		
-		if (result == null) result = "";
-		return result;	
+		return poster.execute(new ArrayList<BasicNameValuePair>() {{
+			add(new BasicNameValuePair("course",course));
+			add(new BasicNameValuePair("hole",hole));
+		}});
 		
 	}
 	
