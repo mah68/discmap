@@ -60,6 +60,10 @@
             android:name="com.cary.discmap.HoleActivity"
             android:label="@string/title_activity_hole" >
         </activity>
+        <activity
+            android:name="com.cary.discmap.CourseActivity"
+            android:label="@string/title_activity_course" >
+        </activity>
     </application>
 
 </manifest>

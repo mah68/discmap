@@ -1,4 +1,4 @@
-package com.cary.discmap;
+package com.cary.discmap.server;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -12,6 +12,10 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+
+import com.cary.discmap.Constants;
+import com.cary.discmap.HoleActivity;
+import com.cary.discmap.HttpStringPoster;
 
 import android.os.AsyncTask;
 import android.util.Log;

@@ -36,10 +36,4 @@
         
     </LinearLayout>
 
-    <fragment
-        android:id="@+id/mainMap"
-        android:name="com.google.android.gms.maps.MapFragment"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
-
 </LinearLayout>
