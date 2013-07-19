@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.cary.discmap.server.ServerCourseCommentsTask;
 import com.cary.discmap.server.ServerCourseHolesTask;
 import com.cary.discmap.server.ServerCourseInfoTask;
+import com.cary.discmap.server.ServerCourseRatingsTask;
 import com.cary.discmap.views.Comment;
 import com.cary.discmap.views.CommentAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -57,6 +58,7 @@ public class CourseActivity extends Activity {
 		new ServerCourseInfoTask(this).execute(course);
 		new ServerCourseHolesTask(this).execute(course);
 		new ServerCourseCommentsTask(this).execute(course);
+		new ServerCourseRatingsTask(this).execute(course);
 	}
 
 	@Override
@@ -118,7 +120,7 @@ public class CourseActivity extends Activity {
 		try {
 			JSONArray list = new JSONArray(json);
 			((TextView) findViewById(R.id.commentsTitleTextView)).setText(
-					list.length()+" Comments");
+					list.length()+" comments");
 			for (int i=0; i < list.length(); i++) {
 				JSONObject data = list.getJSONObject(i);
 				String user = data.getString("posted_by");
@@ -134,6 +136,29 @@ public class CourseActivity extends Activity {
 		}
 		
 		commentList.setAdapter(new CommentAdapter(this,R.layout.comment,comments.toArray(new Comment[comments.size()])));
+	}
+	
+	public void courseRatingsLoaded(String json) {
+		float rating = (float) 0.0;
+		try {
+			JSONArray list = new JSONArray(json);
+			if (list.length() == 1) numRatings.setText("1 rating");
+			else numRatings.setText(list.length()+" ratings");
+			
+			for (int i=0; i < list.length(); i++) {
+				JSONObject data = list.getJSONObject(i);
+				Integer score = Integer.parseInt(data.getString("rating"));
+				rating += score;
+			}
+			
+			rating /= list.length(); // find the average
+			this.rating.setText(String.valueOf(rating));
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+			Log.e("json_error", e.getMessage());
+			// TODO error handling
+		}
 	}
 	
 	private void removeMap() {

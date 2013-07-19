@@ -116,8 +116,9 @@ public class LoginActivity extends Activity {
 	 * Removes loading image and processes result.
 	 */
 	public void loginTaskDone(String result) {
-		if (result.equals("authenticated")) {
-			manager.createLoginSession(username.getText().toString());
+		if (result.startsWith("authenticated")) {
+			Integer id = Integer.parseInt(result.split(":")[1]);
+			manager.createLoginSession(username.getText().toString(),id);
 			loginRedirect();
 			return;
 		}
@@ -154,8 +155,9 @@ public class LoginActivity extends Activity {
 	}
 
 	public void createTaskDone(String result) {
-		if (result.equals("success")) {
-			manager.createLoginSession(username.getText().toString());
+		if (result.startsWith("success")) {
+			Integer id = Integer.parseInt(result.split(":")[1]);
+			manager.createLoginSession(username.getText().toString(),id);
 			loginRedirect();
 			return;
 		}

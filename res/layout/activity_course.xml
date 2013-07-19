@@ -93,7 +93,7 @@
 			            android:layout_height="wrap_content"
 			            android:gravity="center"
 			            android:textSize="14sp"
-			            android:text="0 ratings" />            
+			            android:text="loading ratings" />            
 	            
 	        </LinearLayout>
 	        
@@ -112,7 +112,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Play Course From Hole" />
-	
     
     <TextView 
         android:id="@+id/commentsTitleTextView"

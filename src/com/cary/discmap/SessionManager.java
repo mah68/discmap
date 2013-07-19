@@ -25,6 +25,8 @@ public class SessionManager {
     private static final String IS_LOGGED_IN = "isLoggedIn";
      
     public static final String KEY_USER = "user";
+    
+    public static final String KEY_ID = "id";
      
     private SessionManager(Context context){
         this.mContext = context;
@@ -35,15 +37,20 @@ public class SessionManager {
     /**
      * Create login session
      * */
-    public void createLoginSession(String user){
+    public void createLoginSession(String user, int id){
         editor.putBoolean(IS_LOGGED_IN, true);
         editor.putString(KEY_USER, user);
+        editor.putInt(KEY_ID, id);
 
         editor.commit();
     }
     
     public String getUser() {
     	return pref.getString(KEY_USER, null);
+    }
+    
+    public Integer getId() {
+    	return pref.getInt(KEY_ID, 0);
     }
     
     public boolean isLoggedIn() {

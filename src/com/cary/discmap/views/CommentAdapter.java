@@ -1,16 +1,15 @@
 package com.cary.discmap.views;
 
-import com.cary.discmap.R;
-import com.cary.discmap.R.id;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.cary.discmap.R;
+import com.cary.discmap.server.ServerCommentUserLookupTask;
 
 public class CommentAdapter extends ArrayAdapter<Comment> {
 	Context context; 
@@ -47,7 +46,8 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         }
         
         Comment comment = data[position];
-        holder.user.setText(comment.user);
+        // another async task to lookup user from id
+        new ServerCommentUserLookupTask(holder.user).execute(Integer.parseInt(comment.user));
         holder.date.setText(comment.date);
         holder.comment.setText(comment.comment);
         
