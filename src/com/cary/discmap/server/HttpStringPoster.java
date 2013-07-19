@@ -1,4 +1,4 @@
-package com.cary.discmap;
+package com.cary.discmap.server;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -64,6 +64,10 @@ public class HttpStringPoster {
 		
 		if (result == null) result = "";
 		return result;	
+	}
+	
+	public String execute() {
+		return execute(new ArrayList<BasicNameValuePair>());
 	}
 
 }

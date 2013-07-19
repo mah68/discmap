@@ -12,6 +12,7 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 	Button logout;
 	Button testHole;
+	Button testCourse;
 	TextView welcome;
 	SessionManager manager;
 
@@ -45,6 +46,18 @@ public class MainActivity extends Activity {
 				i.putExtra("hole", 1);
 				startActivity(i);
 				
+			}
+			
+		});
+		
+		testCourse = (Button) findViewById(R.id.testCourseMainButton);
+		testCourse.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent(getApplicationContext(), CourseActivity.class);
+				i.putExtra("course", 1);
+				startActivity(i);
 			}
 			
 		});

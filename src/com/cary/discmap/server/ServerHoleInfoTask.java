@@ -15,7 +15,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.cary.discmap.Constants;
 import com.cary.discmap.HoleActivity;
-import com.cary.discmap.HttpStringPoster;
 
 import android.os.AsyncTask;
 import android.util.Log;

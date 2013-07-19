@@ -50,18 +50,25 @@
 	        android:text="Next"/>
     </LinearLayout>
     
-    <fragment
-        android:id="@+id/holeMap"
-        android:name="com.google.android.gms.maps.MapFragment"
+    <com.cary.discmap.views.SquareLayout
+        android:id="@+id/holeMapContainer"
         android:layout_width="fill_parent"
-        android:layout_height="316dp"
-        map:mapType="satellite"
-        map:uiCompass="true"
-        map:uiRotateGestures="true"
-        map:uiScrollGestures="true"
-        map:uiTiltGestures="false"
-        map:uiZoomControls="true"
-        map:uiZoomGestures="true" />
+   		android:layout_height="0dp"
+   		android:orientation="horizontal">
+	    
+	    <fragment
+	        android:id="@+id/holeMap"
+	        android:name="com.google.android.gms.maps.MapFragment"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        map:mapType="satellite"
+	        map:uiCompass="true"
+	        map:uiRotateGestures="true"
+	        map:uiScrollGestures="true"
+	        map:uiTiltGestures="false"
+	        map:uiZoomControls="false"
+	        map:uiZoomGestures="true" />
+	</com.cary.discmap.views.SquareLayout>
 
     <ScrollView
         android:id="@+id/holeScoreScrollView"

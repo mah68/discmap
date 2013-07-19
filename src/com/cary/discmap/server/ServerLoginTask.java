@@ -14,7 +14,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.cary.discmap.Constants;
-import com.cary.discmap.HttpStringPoster;
 import com.cary.discmap.LoginActivity;
 
 import android.os.AsyncTask;

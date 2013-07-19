@@ -25,6 +25,7 @@ public class HoleActivity extends Activity {
 	private float[] hole;
 	String lastEdited;
 	int editedBy;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +56,12 @@ public class HoleActivity extends Activity {
 		LatLng holeCoords = new LatLng(hole[0], hole[1]);
 		map.addMarker(new MarkerOptions().position(teeCoords).title("tee"));
 		map.addMarker(new MarkerOptions().position(holeCoords).title("hole"));
-		
-		LatLng neBound = new LatLng(Math.max(tee[0], hole[0]), Math.max(tee[1],hole[1]));
-		LatLng swBound = new LatLng(Math.min(tee[0], hole[0]), Math.min(tee[1],hole[1]));
-		
 		map.addPolyline(new PolylineOptions().add(teeCoords,holeCoords)
 				.width(Constants.LINE_WIDTH)
 				.color(Constants.LINE_COLOR));
 		
+		LatLng neBound = new LatLng(Math.max(tee[0], hole[0]), Math.max(tee[1],hole[1]));
+		LatLng swBound = new LatLng(Math.min(tee[0], hole[0]), Math.min(tee[1],hole[1]));
 		LatLngBounds bounds = new LatLngBounds(swBound, neBound);
 		map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 75));
 
@@ -93,6 +92,7 @@ public class HoleActivity extends Activity {
 			
 		} catch (JSONException e) {
 			Log.e("log_tag","Error converting to JSON "+e.getMessage());
+			//TODO: Error handling here
 		}
 		
 	}
