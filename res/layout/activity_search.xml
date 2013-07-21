@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SearchActivity" >
+
+    <LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal">
+    
+	    <EditText
+	        android:id="@+id/searchEditText"
+	        android:layout_width="0dp"
+	        android:layout_height="fill_parent"
+	        android:layout_weight=".9"
+	        android:imeOptions="actionSearch"
+	        android:singleLine="true"
+			android:hint="Search courses" />
+	    
+	    <com.cary.discmap.views.SquareLayout
+	        
+	        android:layout_width="0dp"
+	        android:layout_height="30dp"
+	        android:layout_weight=".1" >
+	        
+	        <Button
+	           android:id="@+id/searchSubmit"
+	           android:layout_width="match_parent" 
+	           android:layout_height="match_parent"
+	      	   android:text="Go" />
+	        
+	    </com.cary.discmap.views.SquareLayout>
+
+	</LinearLayout>
+    <ListView
+        android:id="@+id/searchResultsListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+</LinearLayout>

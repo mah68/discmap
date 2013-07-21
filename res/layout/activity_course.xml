@@ -9,128 +9,147 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".CourseActivity" >
-    
-    <TextView
-        android:id="@+id/courseNameTextView"
-        android:layout_width="fill_parent" 
-        android:layout_height="30dp"
-        android:text="Course Name"
-        android:textSize="25sp"
-       	android:gravity="center"
-        />
-    
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="5dip"
-        android:paddingBottom="5dip"
-        >
-        
-  
-	    <com.cary.discmap.views.SquareLayout
-	        android:id="@+id/courseMapContainer"
-	        android:layout_width="0dp"
-	   		android:layout_height="0dp"
-	   		android:orientation="horizontal"
-	   		android:background="@drawable/border"
-	   		android:layout_weight=".5">
-	   		
-	        <fragment
-		        android:id="@+id/courseMap"
-		        android:name="com.google.android.gms.maps.MapFragment"
-		        android:layout_width="fill_parent"
-		        android:layout_height="fill_parent"
-		        map:mapType="satellite"
-		        map:uiCompass="true"
-		        map:uiRotateGestures="true"
-		        map:uiScrollGestures="true"
-		        map:uiTiltGestures="false"
-		        map:uiZoomControls="false"
-		        map:uiZoomGestures="true" />
-	   		
-		    <TextView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:gravity="center"
-		        android:layout_gravity="center"
-		        android:paddingLeft="10dip"
-		        android:paddingRight="10dip"
-		        android:text="No Map Data Available" />
-		    
-		    <!-- Google Map will go here -->
-	    
-	    </com.cary.discmap.views.SquareLayout>
 
-	    
-	    <LinearLayout
-	        android:layout_width="0dp"
-	   		android:layout_height="wrap_content"
-	   		android:orientation="vertical"
-	   		android:layout_weight=".5" 
-   		    android:paddingBottom="5dip"
-		    android:paddingLeft="5dip"
-		    android:paddingRight="5dip"
-		    android:paddingTop="5dip">
-		    
-	        <TextView
-	            android:id="@+id/courseRatingTextView"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:gravity="center"
-	            android:textSize="45dip"
-	            android:text="N/A" />
-	        
-	        <LinearLayout 
-		        android:layout_width="fill_parent"
-		   		android:layout_height="wrap_content"
-		   		android:layout_gravity="center"
-		   		android:paddingTop="5dip" >
-	            
-	            	<TextView
-	            	    android:id="@+id/courseNumRatingsTextView"
-			            android:layout_width="fill_parent"
-			            android:layout_height="wrap_content"
-			            android:gravity="center"
-			            android:textSize="14sp"
-			            android:text="loading ratings" />            
-	            
-	        </LinearLayout>
-	        
-	    </LinearLayout>
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/playCourseButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Play Course" />
-    
-    <Button
-        android:id="@+id/playCourseFromHoleButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Play Course From Hole" />
-    
-    <TextView 
-        android:id="@+id/commentsTitleTextView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp" 
-        android:text="Loading Comments" />
-    
-    
     <ScrollView
-        android:id="@+id/commentsScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" 
-        android:fillViewport="true">
+        android:layout_height="match_parent"
+        android:fillViewport="true" >
 
-        <ListView
-            android:id="@+id/commentsListView"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/courseNameTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="35dp"
+                android:gravity="center"
+                android:text="Course Name"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dip"
+                android:paddingTop="5dip" >
+
+                <com.cary.discmap.views.SquareLayout
+                    android:id="@+id/courseMapContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/border"
+                    android:orientation="horizontal" >
+
+                    <fragment
+                        android:id="@+id/courseMap"
+                        android:name="com.google.android.gms.maps.MapFragment"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        map:mapType="none"
+                        map:uiCompass="true"
+                        map:uiRotateGestures="true"
+                        map:uiScrollGestures="true"
+                        map:uiTiltGestures="false"
+                        map:uiZoomControls="false"
+                        map:uiZoomGestures="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:paddingLeft="10dip"
+                        android:paddingRight="10dip"
+                        android:text="No Map Data Available" />
+
+                    <!-- Google Map will go here -->
+
+                </com.cary.discmap.views.SquareLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:orientation="vertical"
+                    android:paddingBottom="5dip"
+                    android:paddingLeft="5dip"
+                    android:paddingRight="5dip"
+                    android:paddingTop="5dip" >
+
+                    <TextView
+                        android:id="@+id/courseRatingTextView"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="N/A"
+                        android:textSize="45dip" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingTop="5dip" >
+
+                        <TextView
+                            android:id="@+id/courseNumRatingsTextView"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="loading ratings"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/playCourseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Play Course" />
+
+            <Button
+                android:id="@+id/playCourseFromHoleButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Play Course From Hole" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/commentEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:hint="Write comment..."
+                    android:inputType="textMultiLine"
+                    android:maxLength="200" />
+
+                <Button
+                    android:id="@+id/commentSubmit"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.3"
+                    android:text="Submit" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/commentsTitleTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Loading Comments"
+                android:textSize="20sp" />
+
+            <ListView
+                android:id="@+id/commentsListView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </ScrollView>
-    
+
 </LinearLayout>

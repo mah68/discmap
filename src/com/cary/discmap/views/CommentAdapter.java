@@ -47,7 +47,9 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         
         Comment comment = data[position];
         // another async task to lookup user from id
-        new ServerCommentUserLookupTask(holder.user).execute(Integer.parseInt(comment.user));
+        if(holder.user.getText() != comment.user) {
+        	new ServerCommentUserLookupTask(holder.user).execute(Integer.parseInt(comment.user));
+        }
         holder.date.setText(comment.date);
         holder.comment.setText(comment.comment);
         

@@ -1,5 +1,7 @@
 package com.cary.discmap;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -7,13 +9,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.cary.discmap.server.ServerCommentTask;
 import com.cary.discmap.server.ServerCourseCommentsTask;
 import com.cary.discmap.server.ServerCourseHolesTask;
 import com.cary.discmap.server.ServerCourseInfoTask;
@@ -23,6 +32,8 @@ import com.cary.discmap.views.CommentAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -34,31 +45,69 @@ public class CourseActivity extends Activity {
 	private TextView rating;
 	private TextView numRatings;
 	private ListView commentList;
+	private EditText addComment;
+	private Button playCourse;
+	
+	private Integer courseId;
+	private String holesJSON;
 	
 	private GoogleMap map;
 	private float[] neBound;
 	private float[] swBound;
-	
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		SessionManager.get(getApplicationContext()).checkLogin();
 		setContentView(R.layout.activity_course);
 		
 		courseName = (TextView) findViewById(R.id.courseNameTextView);
 		rating = (TextView) findViewById(R.id.courseRatingTextView);
 		numRatings = (TextView) findViewById(R.id.courseNumRatingsTextView);
 		commentList = (ListView) findViewById(R.id.commentsListView);
+		addComment = (EditText) findViewById(R.id.commentEditText);
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.courseMap)).getMap();
-
 		
 		Intent i = getIntent();
-		Integer course = i.getIntExtra("course", 0);
-		new ServerCourseInfoTask(this).execute(course);
-		new ServerCourseHolesTask(this).execute(course);
-		new ServerCourseCommentsTask(this).execute(course);
-		new ServerCourseRatingsTask(this).execute(course);
+		courseId = i.getIntExtra("course", 0);
+		
+		Button submitComment = (Button) findViewById(R.id.commentSubmit);
+		submitComment.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String comment = addComment.getText().toString();
+				String user = String.valueOf(SessionManager.get(getApplicationContext()).getId());
+				String course = String.valueOf(getId());
+				
+				new ServerCommentTask(CourseActivity.this).execute(user,course,comment);
+				
+				addComment.setText("");
+				InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(addComment.getWindowToken(), 0);
+			}
+		});
+		
+		playCourse = (Button) findViewById(R.id.playCourseButton);
+		playCourse.setOnClickListener( new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent(getApplicationContext(), HoleActivity.class);
+				i.putExtra("course", 1);
+				i.putExtra("hole", 1);
+				i.putExtra("courseName",courseName.getText().toString());
+				i.putExtra("holesJSON", holesJSON);
+				startActivity(i);
+			}
+			
+		});
+		// Don't enable button until holes are loaded
+		playCourse.setEnabled(false);
+
+		new ServerCourseInfoTask(this).execute(courseId);
+		new ServerCourseHolesTask(this).execute(courseId);
+		new ServerCourseCommentsTask(this).execute(courseId);
+		new ServerCourseRatingsTask(this).execute(courseId);
 	}
 
 	@Override
@@ -70,6 +119,10 @@ public class CourseActivity extends Activity {
 	
 	public void loading() {
 		//TODO loading behavior
+	}
+	
+	public int getId() {
+		return courseId;
 	}
 	
 	public void courseInfoLoaded(String json) {
@@ -84,6 +137,8 @@ public class CourseActivity extends Activity {
 	}
 	
 	public void courseHolesLoaded(String json) {
+		holesJSON = json;
+		playCourse.setEnabled(true);
 		try {
 			JSONArray list = new JSONArray(json);
 			if (list.length() == 0) return; // show no map if no map data
@@ -107,7 +162,6 @@ public class CourseActivity extends Activity {
 			} else {
 				setMapBounds();
 			}
-			
 		} catch (JSONException e) {
 			e.printStackTrace();
 			Log.e("json_error", e.getMessage());
@@ -121,7 +175,7 @@ public class CourseActivity extends Activity {
 			JSONArray list = new JSONArray(json);
 			((TextView) findViewById(R.id.commentsTitleTextView)).setText(
 					list.length()+" comments");
-			for (int i=0; i < list.length(); i++) {
+			for (int i=list.length()-1; i >= 0 ; i--) {
 				JSONObject data = list.getJSONObject(i);
 				String user = data.getString("posted_by");
 				String date = data.getString("post_time");
@@ -142,17 +196,10 @@ public class CourseActivity extends Activity {
 		float rating = (float) 0.0;
 		try {
 			JSONArray list = new JSONArray(json);
-			if (list.length() == 1) numRatings.setText("1 rating");
-			else numRatings.setText(list.length()+" ratings");
-			
-			for (int i=0; i < list.length(); i++) {
-				JSONObject data = list.getJSONObject(i);
-				Integer score = Integer.parseInt(data.getString("rating"));
-				rating += score;
-			}
-			
-			rating /= list.length(); // find the average
-			this.rating.setText(String.valueOf(rating));
+			if (list.getInt(1) == 1) numRatings.setText("1 rating");
+			else numRatings.setText(list.getInt(1)+" ratings");
+
+			this.rating.setText(list.getString(0));
 			
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -173,6 +220,8 @@ public class CourseActivity extends Activity {
 	private void mapHole(float[] tee, float[] hole, String holeNum) {
 		LatLng teeCoords = new LatLng(tee[0], tee[1]);
 		LatLng holeCoords = new LatLng(hole[0], hole[1]);
+		BitmapDescriptor holeDescriptor = BitmapDescriptorFactory.fromAsset("hole_marker.png");
+		map.addMarker(new MarkerOptions().position(holeCoords).icon(holeDescriptor));
 		map.addMarker(new MarkerOptions().position(teeCoords).title("hole "+holeNum));
 		map.addPolyline(new PolylineOptions().add(teeCoords,holeCoords)
 				.width(Constants.LINE_WIDTH)
@@ -196,7 +245,6 @@ public class CourseActivity extends Activity {
 		swBound[1] = Math.min(swBound[1],Math.min(tee[1], hole[1]));
 		}
 	}
-	
 
 	/**
 	 * Once all holes are mapped, set bounds
@@ -208,6 +256,8 @@ public class CourseActivity extends Activity {
 		LatLngBounds bounds = new LatLngBounds(sw, ne);
 
 		map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+		map.setMyLocationEnabled(true);
+		map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
 	}
 

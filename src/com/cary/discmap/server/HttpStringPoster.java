@@ -5,16 +5,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import android.util.Log;
 
@@ -31,7 +32,13 @@ public class HttpStringPoster {
 		StringBuilder sb = null;
 		
 		try {
-			HttpClient httpclient = new DefaultHttpClient();
+			HttpParams httpParameters = new BasicHttpParams();
+			// Set the timeout in milliseconds until a connection is established.
+			HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
+			// Set the default socket timeout (SO_TIMEOUT)
+			HttpConnectionParams.setSoTimeout(httpParameters, 5000);
+			
+			HttpClient httpclient = new DefaultHttpClient(httpParameters);
 			HttpPost httppost = new HttpPost(url);
 			httppost.setEntity(new UrlEncodedFormEntity(pairs));
 			HttpResponse response = httpclient.execute(httppost);

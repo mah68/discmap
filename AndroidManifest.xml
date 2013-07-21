@@ -62,7 +62,12 @@
         </activity>
         <activity
             android:name="com.cary.discmap.CourseActivity"
-            android:label="@string/title_activity_course" >
+            android:label="@string/title_activity_course"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name="com.cary.discmap.SearchActivity"
+            android:label="@string/title_activity_search" >
         </activity>
     </application>
 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/searchResultLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:background="@drawable/search_press"
+    android:orientation="vertical" >
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal">
+        
+	    <TextView 
+	        android:id="@+id/searchResultCourseName"
+	        android:layout_width="0dp"
+	        android:layout_height="fill_parent" 
+	        android:layout_weight=".8"
+	        android:layout_gravity="center"
+	        android:textSize="25dp"
+	        android:text = "Course Name"/>  
+	        
+	    <TextView 
+	        android:id="@+id/searchResultRating"
+	        android:layout_width="0dp"
+	        android:layout_height="fill_parent" 
+	        android:layout_weight=".2"
+	        android:textSize="30sp"
+	        android:textColor="#FF2222"
+	        android:gravity="center"
+	        android:text="N/A"/>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000">
+        
+    </LinearLayout>
+
+</LinearLayout>
+
+

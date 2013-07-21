@@ -11,5 +11,6 @@
     <string name="title_activity_hole">HoleActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_course">CourseActivity</string>
+    <string name="title_activity_search">Search</string>
 
 </resources>
