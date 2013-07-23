@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/mapHoleDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="5dp"
+        android:paddingBottom="15dp"
+        android:textSize="20sp"
+        android:text="This hole doesn&apos;t have any map data yet. Help everyone out by mapping it as you play." />
+
+    <Button
+        android:id="@+id/teeMappingButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="I&apos;m at the tee" />
+
+    <Button
+        android:id="@+id/holeMappingButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="I&apos;m at the basket" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/resetMappingButton"
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:layout_height="wrap_content"
+            android:text="Reset" />
+
+        <Button
+            android:id="@+id/submitMappingButton"
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:layout_height="wrap_content"
+            android:text="Submit" />
+    </LinearLayout>
+
+</LinearLayout>

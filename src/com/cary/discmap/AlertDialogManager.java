@@ -3,6 +3,7 @@ package com.cary.discmap;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
   
 public class AlertDialogManager {
     /**
@@ -24,16 +25,19 @@ public class AlertDialogManager {
         // Setting Dialog Message
         alertDialog.setMessage(message);
   
-        if(status != null)
+        if(status != null) {
             // Setting alert dialog icon
 //            alertDialog.setIcon((status) ? R.drawable.success : R.drawable.fail);
+        }
   
         // Setting OK Button
         alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             }
         });
-  
+        
+        Log.d("test",String.valueOf(context));
+        
         // Showing Alert Message
         alertDialog.show();
     }

@@ -22,6 +22,8 @@ public class MainActivity extends Activity {
 		manager.checkLogin();
 		setContentView(R.layout.activity_main);
 		
+		//TODO check if the device has google play services
+		
 		welcome = (TextView) findViewById(R.id.userWelcomeText);
 		welcome.setText("Welcome, "+manager.getUser());
 		

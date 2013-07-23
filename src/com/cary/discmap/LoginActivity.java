@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends DiscActivity {
 	EditText username;
 	EditText password;
 	EditText confirm;
@@ -25,7 +25,6 @@ public class LoginActivity extends Activity {
 	TextView error;
 	ImageView loading;
 	SessionManager manager;
-	AlertDialogManager alert;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,6 @@ public class LoginActivity extends Activity {
 		error = (TextView) findViewById(R.id.loginErrorView);
 		loading = (ImageView) findViewById(R.id.loginLoadingIcon);
 		manager = SessionManager.get(getApplicationContext());
-		alert = new AlertDialogManager();
 		
 		submit.setOnClickListener(new OnClickListener() {
 
@@ -175,7 +173,7 @@ public class LoginActivity extends Activity {
 		/*
 		 * Error Codes:
 		 * 0: User already exists
-		 * 1: query error (server problem)
+		 * 1: query error (internal server problem)
 		 * 4: not enough arguments passed (shouldn't ever happen)
 		 */
 		
@@ -183,9 +181,7 @@ public class LoginActivity extends Activity {
 			error.setText("Username already exists.");
 			username.setText("");
 		} else {
-			alert.showAlertDialog(getApplicationContext(), "Server Error", "Error contacting server, " +
-					"please try again soon or contact us at "+getString(R.string.contact_email)+
-					" to report the problem", null);
+			networkAlertDialog();
 		}
 		
 		loading.setImageResource(0);

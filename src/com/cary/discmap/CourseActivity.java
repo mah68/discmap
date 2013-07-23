@@ -1,18 +1,18 @@
 package com.cary.discmap;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,17 +39,21 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-public class CourseActivity extends Activity {
+public class CourseActivity extends DiscActivity implements HoleLoader {
 	
-	private TextView courseName;
+	private TextView courseNameView;
 	private TextView rating;
 	private TextView numRatings;
 	private ListView commentList;
 	private EditText addComment;
 	private Button playCourse;
+	private Button submitComment;
 	
 	private Integer courseId;
 	private String holesJSON;
+	private String courseName;
+	
+	private List<AsyncTask> activeTasks;
 	
 	private GoogleMap map;
 	private float[] neBound;
@@ -61,7 +65,7 @@ public class CourseActivity extends Activity {
 		SessionManager.get(getApplicationContext()).checkLogin();
 		setContentView(R.layout.activity_course);
 		
-		courseName = (TextView) findViewById(R.id.courseNameTextView);
+		courseNameView = (TextView) findViewById(R.id.courseNameTextView);
 		rating = (TextView) findViewById(R.id.courseRatingTextView);
 		numRatings = (TextView) findViewById(R.id.courseNumRatingsTextView);
 		commentList = (ListView) findViewById(R.id.commentsListView);
@@ -71,7 +75,8 @@ public class CourseActivity extends Activity {
 		Intent i = getIntent();
 		courseId = i.getIntExtra("course", 0);
 		
-		Button submitComment = (Button) findViewById(R.id.commentSubmit);
+		submitComment = (Button) findViewById(R.id.commentSubmit);
+		submitComment.setEnabled(false); // only enable when comment is typed
 		submitComment.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -87,27 +92,43 @@ public class CourseActivity extends Activity {
 			}
 		});
 		
+		// disable submit if there is no comment
+		addComment.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void afterTextChanged(Editable arg0) {}
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {}
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {
+				submitComment.setEnabled((addComment.getText().toString().length() > 0) ? true : false); 
+			}
+		});
+		
 		playCourse = (Button) findViewById(R.id.playCourseButton);
 		playCourse.setOnClickListener( new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
 				Intent i = new Intent(getApplicationContext(), HoleActivity.class);
-				i.putExtra("course", 1);
+				i.putExtra("course", courseId);
 				i.putExtra("hole", 1);
-				i.putExtra("courseName",courseName.getText().toString());
+				i.putExtra("courseName",courseName);
 				i.putExtra("holesJSON", holesJSON);
 				startActivity(i);
 			}
 			
 		});
-		// Don't enable button until holes are loaded
+		// Don't enable button until holes and course are loaded
 		playCourse.setEnabled(false);
-
-		new ServerCourseInfoTask(this).execute(courseId);
-		new ServerCourseHolesTask(this).execute(courseId);
-		new ServerCourseCommentsTask(this).execute(courseId);
-		new ServerCourseRatingsTask(this).execute(courseId);
+		
+		activeTasks = new ArrayList<AsyncTask>() {{
+			new ServerCourseInfoTask(CourseActivity.this).execute(courseId);
+			new ServerCourseHolesTask(CourseActivity.this).execute(courseId);
+			new ServerCourseCommentsTask(CourseActivity.this).execute(courseId);
+			new ServerCourseRatingsTask(CourseActivity.this).execute(courseId);
+		}};
 	}
 
 	@Override
@@ -117,6 +138,7 @@ public class CourseActivity extends Activity {
 		return true;
 	}
 	
+	@Override
 	public void loading() {
 		//TODO loading behavior
 	}
@@ -126,19 +148,37 @@ public class CourseActivity extends Activity {
 	}
 	
 	public void courseInfoLoaded(String json) {
+		if (!json.startsWith("{"))  {
+			cancelTasks();
+			networkAlertDialog();
+			return;
+		}
 		try {
 			JSONObject data = new JSONObject(json);
-			courseName.setText(data.getString("course_name"));
+			courseName = data.getString("course_name");
+			courseNameView.setText(courseName);
+			updatePlayButtons();
 			
 		} catch (JSONException e) {
-			e.printStackTrace();
-			//TODO error handling here
+			alertDialog("Data Error", getString(R.string.JSON_error_message) + " Error Message:"+e.getMessage());
 		}
 	}
 	
+	private void cancelTasks() {
+		for(int i=0; i<activeTasks.size();i++) {
+			activeTasks.get(i).cancel(true);
+		}
+	}
+
+	@Override
 	public void courseHolesLoaded(String json) {
+		if (!json.startsWith("["))  {
+			cancelTasks();
+			networkAlertDialog();
+			return;
+		}
 		holesJSON = json;
-		playCourse.setEnabled(true);
+		updatePlayButtons();
 		try {
 			JSONArray list = new JSONArray(json);
 			if (list.length() == 0) return; // show no map if no map data
@@ -157,19 +197,26 @@ public class CourseActivity extends Activity {
 					mapHole(tee,hole,holeNum);
 				}
 			}
-			if(noMap) {
-				removeMap();
-			} else {
+			if(!noMap) {
 				setMapBounds();
 			}
 		} catch (JSONException e) {
-			e.printStackTrace();
-			Log.e("json_error", e.getMessage());
-			// TODO error handling
+			alertDialog("Data Error", getString(R.string.JSON_error_message) + " Error Message:"+e.getMessage());
 		}
 	}
 	
+	private void updatePlayButtons() {
+		if((courseName != null) & (holesJSON != null)) {
+			playCourse.setEnabled(true);
+		} else { playCourse.setEnabled(false); }
+	}
+
 	public void courseCommentsLoaded(String json) {
+		if (!json.startsWith("["))  {
+			cancelTasks();
+			networkAlertDialog();
+			return;
+		}
 		ArrayList<Comment> comments = new ArrayList<Comment>();
 		try {
 			JSONArray list = new JSONArray(json);
@@ -184,32 +231,28 @@ public class CourseActivity extends Activity {
 				comments.add(new Comment(user,date,comment));
 			}
 		} catch (JSONException e) {
-			e.printStackTrace();
-			Log.e("json_error", e.getMessage());
-			// TODO error handling
+			alertDialog("Data Error", getString(R.string.JSON_error_message) + " Error Message:"+e.getMessage());
 		}
 		
 		commentList.setAdapter(new CommentAdapter(this,R.layout.comment,comments.toArray(new Comment[comments.size()])));
 	}
 	
 	public void courseRatingsLoaded(String json) {
-		float rating = (float) 0.0;
+		if (!json.startsWith("["))  {
+			cancelTasks();
+			networkAlertDialog();
+			return;
+		}
 		try {
 			JSONArray list = new JSONArray(json);
 			if (list.getInt(1) == 1) numRatings.setText("1 rating");
 			else numRatings.setText(list.getInt(1)+" ratings");
-
+			
 			this.rating.setText(list.getString(0));
 			
 		} catch (JSONException e) {
-			e.printStackTrace();
-			Log.e("json_error", e.getMessage());
-			// TODO error handling
+			alertDialog("Data Error", getString(R.string.JSON_error_message) + " Error Message:"+e.getMessage());
 		}
-	}
-	
-	private void removeMap() {
-		//TODO remove that map
 	}
 
 	/**

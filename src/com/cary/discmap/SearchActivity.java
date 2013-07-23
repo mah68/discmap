@@ -23,7 +23,7 @@ import com.cary.discmap.server.ServerSearchCoursesTask;
 import com.cary.discmap.views.SearchResult;
 import com.cary.discmap.views.SearchResultAdapter;
 
-public class SearchActivity extends Activity {
+public class SearchActivity extends DiscActivity {
 
 	private EditText searchBar;
 	private Button searchSubmit;
@@ -73,6 +73,10 @@ public class SearchActivity extends Activity {
 	}
 
 	public void resultsLoaded(String json) {
+		if (!json.startsWith("["))  {
+			networkAlertDialog();
+			return;
+		}
 		List<SearchResult> resultList = new ArrayList<SearchResult>();
 		try {
 			JSONArray jarray = new JSONArray(json);

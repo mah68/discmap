@@ -7,13 +7,13 @@ import org.apache.http.message.BasicNameValuePair;
 import android.os.AsyncTask;
 
 import com.cary.discmap.Constants;
-import com.cary.discmap.CourseActivity;
+import com.cary.discmap.HoleLoader;
 
 public class ServerCourseHolesTask extends AsyncTask<Integer,Void,String> {
 	
-	private CourseActivity parent;
+	private HoleLoader parent;
 	
-	public ServerCourseHolesTask(CourseActivity parent) {
+	public ServerCourseHolesTask(HoleLoader parent) {
 		this.parent = parent;
 	}
 	
