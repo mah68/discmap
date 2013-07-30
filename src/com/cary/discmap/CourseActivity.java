@@ -124,10 +124,10 @@ public class CourseActivity extends DiscActivity implements HoleLoader {
 		playCourse.setEnabled(false);
 		
 		activeTasks = new ArrayList<AsyncTask>() {{
-			new ServerCourseInfoTask(CourseActivity.this).execute(courseId);
-			new ServerCourseHolesTask(CourseActivity.this).execute(courseId);
-			new ServerCourseCommentsTask(CourseActivity.this).execute(courseId);
-			new ServerCourseRatingsTask(CourseActivity.this).execute(courseId);
+			add(new ServerCourseInfoTask(CourseActivity.this).execute(courseId));
+			add(new ServerCourseHolesTask(CourseActivity.this).execute(courseId));
+			add(new ServerCourseCommentsTask(CourseActivity.this).execute(courseId));
+			add(new ServerCourseRatingsTask(CourseActivity.this).execute(courseId));
 		}};
 	}
 

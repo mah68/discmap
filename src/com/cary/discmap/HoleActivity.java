@@ -49,7 +49,7 @@ public class HoleActivity extends DiscActivity implements
 		setContentView(R.layout.activity_hole);
 		map = ((MapFragment) getFragmentManager()
 				.findFragmentById(R.id.holeMap)).getMap();
-		Log.d("test", "test");
+
 		Intent i = getIntent();
 		courseId = i.getIntExtra("course", 0);
 		courseName = i.getStringExtra("courseName");

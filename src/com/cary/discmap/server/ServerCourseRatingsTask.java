@@ -1,10 +1,7 @@
 package com.cary.discmap.server;
 
-import java.util.ArrayList;
-
-import org.apache.http.message.BasicNameValuePair;
-
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.cary.discmap.Constants;
 import com.cary.discmap.CourseActivity;
@@ -33,6 +30,6 @@ public class ServerCourseRatingsTask extends AsyncTask<Integer,Void,String> {
 	
 	@Override
 	protected void onPostExecute(String result) {
-		parent.courseRatingsLoaded(result);
+		if(!isCancelled()) parent.courseRatingsLoaded(result);
 	}
 }

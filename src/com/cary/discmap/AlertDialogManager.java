@@ -36,8 +36,6 @@ public class AlertDialogManager {
             }
         });
         
-        Log.d("test",String.valueOf(context));
-        
         // Showing Alert Message
         alertDialog.show();
     }

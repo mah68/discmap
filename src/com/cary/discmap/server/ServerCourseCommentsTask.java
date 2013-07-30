@@ -33,6 +33,7 @@ public class ServerCourseCommentsTask extends AsyncTask<Integer,Void,String> {
 	
 	@Override
 	protected void onPostExecute(String result) {
-		parent.courseCommentsLoaded(result);
+		
+		if(!isCancelled()) parent.courseCommentsLoaded(result);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.cary.discmap.Constants;
 import com.cary.discmap.HoleLoader;
@@ -35,7 +36,11 @@ public class ServerCourseHolesTask extends AsyncTask<Integer,Void,String> {
 	}
 	
 	@Override
+	protected void onCancelled() {
+		Log.d("test","was cancelled");
+	}
+	@Override
 	protected void onPostExecute(String result) {
-		parent.courseHolesLoaded(result);
+		if(!isCancelled()) parent.courseHolesLoaded(result);
 	}
 }

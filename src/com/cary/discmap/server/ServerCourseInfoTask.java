@@ -36,6 +36,6 @@ public class ServerCourseInfoTask extends AsyncTask<Integer,Void,String> {
 	
 	@Override
 	protected void onPostExecute(String result) {
-		parent.courseInfoLoaded(result);
+		if(!isCancelled()) parent.courseInfoLoaded(result);
 	}
 }

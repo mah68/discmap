@@ -7,8 +7,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -26,8 +29,8 @@ import com.cary.discmap.views.SearchResultAdapter;
 public class SearchActivity extends DiscActivity {
 
 	private EditText searchBar;
-	private Button searchSubmit;
 	private ListView results;
+	private AsyncTask searchTask;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +40,6 @@ public class SearchActivity extends DiscActivity {
 
 		searchBar = (EditText) findViewById(R.id.searchEditText);
 		results = (ListView) findViewById(R.id.searchResultsListView);
-		searchSubmit = (Button) findViewById(R.id.searchSubmit);
-
-		searchSubmit.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				search();
-			}
-
-		});
 		
 		searchBar.setOnEditorActionListener(
 		        new EditText.OnEditorActionListener() {
@@ -59,13 +52,35 @@ public class SearchActivity extends DiscActivity {
 		                return false;
 		            }
 		        });
+		
+		searchBar.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void afterTextChanged(Editable s) {}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				search();
+			}
+			
+		});
 
 	}
 
 	private void search() {
 		String search = searchBar.getText().toString();
-		new ServerSearchCoursesTask(SearchActivity.this)
-				.execute(search);
+		if (!search.equals("")) {
+			if(searchTask != null) {
+				searchTask.cancel(true);
+			}
+			searchTask = new ServerSearchCoursesTask(SearchActivity.this)
+					.execute(search);
+		}
 	}
 	
 	public void loading() {
@@ -91,11 +106,11 @@ public class SearchActivity extends DiscActivity {
 			e.printStackTrace();
 		}
 		
-		if (resultList.size() >0 ) {
+		
 		results.setAdapter(new SearchResultAdapter(this,
 				R.layout.search_result, resultList
 						.toArray(new SearchResult[resultList.size()])));
-		} else {
+		if (resultList.size() == 0 ) {
 			//TODO Add no results/add course button
 		}
 	}
