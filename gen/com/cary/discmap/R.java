@@ -188,12 +188,12 @@ containing a value of this type.
     }
     public static final class id {
         public static final int LoginButton=0x7f05001b;
-        public static final int action_settings=0x7f050032;
+        public static final int action_settings=0x7f05003a;
         public static final int commentEditText=0x7f05000c;
         public static final int commentSubmit=0x7f05000d;
-        public static final int commentTextView=0x7f050029;
-        public static final int commenterDateTextView=0x7f050028;
-        public static final int commenterNameTextView=0x7f050027;
+        public static final int commentTextView=0x7f050031;
+        public static final int commenterDateTextView=0x7f050030;
+        public static final int commenterNameTextView=0x7f05002f;
         public static final int commentsListView=0x7f05000f;
         public static final int commentsTitleTextView=0x7f05000e;
         public static final int courseMap=0x7f050007;
@@ -206,7 +206,7 @@ containing a value of this type.
         public static final int holeCourseTitleView=0x7f050011;
         public static final int holeMap=0x7f050015;
         public static final int holeMapContainer=0x7f050014;
-        public static final int holeMappingButton=0x7f05002c;
+        public static final int holeMappingButton=0x7f050034;
         public static final int holeNextButton=0x7f050013;
         public static final int holeNumberView=0x7f050012;
         public static final int holePrevButton=0x7f050010;
@@ -215,7 +215,7 @@ containing a value of this type.
         public static final int loginErrorView=0x7f05001c;
         public static final int loginLoadingIcon=0x7f050020;
         public static final int logoutMainButton=0x7f050021;
-        public static final int mapHoleDescription=0x7f05002a;
+        public static final int mapHoleDescription=0x7f050032;
         public static final int mappingHoleContainer=0x7f050016;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
@@ -223,18 +223,26 @@ containing a value of this type.
         public static final int passwordEditText=0x7f05001a;
         public static final int playCourseButton=0x7f05000a;
         public static final int playCourseFromHoleButton=0x7f05000b;
-        public static final int resetMappingButton=0x7f05002d;
+        public static final int profileAvgScore=0x7f050029;
+        public static final int profileCoursesPlayed=0x7f05002b;
+        public static final int profileDatePicker=0x7f05002e;
+        public static final int profileDateSpinner=0x7f05002c;
+        public static final int profileRefineCourse=0x7f05002d;
+        public static final int profileRoundsPlayed=0x7f05002a;
+        public static final int profileUserTextView=0x7f050028;
+        public static final int resetMappingButton=0x7f050035;
         public static final int satellite=0x7f050002;
-        public static final int searchCoursesMainButton=0x7f050024;
-        public static final int searchEditText=0x7f050025;
-        public static final int searchResultCourseName=0x7f050030;
-        public static final int searchResultLayout=0x7f05002f;
-        public static final int searchResultRating=0x7f050031;
-        public static final int searchResultsListView=0x7f050026;
-        public static final int submitMappingButton=0x7f05002e;
-        public static final int teeMappingButton=0x7f05002b;
+        public static final int searchCoursesMainButton=0x7f050025;
+        public static final int searchEditText=0x7f050026;
+        public static final int searchResultCourseName=0x7f050038;
+        public static final int searchResultLayout=0x7f050037;
+        public static final int searchResultRating=0x7f050039;
+        public static final int searchResultsListView=0x7f050027;
+        public static final int submitMappingButton=0x7f050036;
+        public static final int teeMappingButton=0x7f050033;
         public static final int terrain=0x7f050003;
         public static final int testCourseMainButton=0x7f050023;
+        public static final int testProfileMainButton=0x7f050024;
         public static final int userEditText=0x7f050019;
         public static final int userWelcomeText=0x7f050022;
         public static final int welcomeTextView=0x7f050018;
@@ -245,9 +253,10 @@ containing a value of this type.
         public static final int activity_login=0x7f030002;
         public static final int activity_main=0x7f030003;
         public static final int activity_search=0x7f030004;
-        public static final int comment=0x7f030005;
-        public static final int map_hole=0x7f030006;
-        public static final int search_result=0x7f030007;
+        public static final int activity_user=0x7f030005;
+        public static final int comment=0x7f030006;
+        public static final int map_hole=0x7f030007;
+        public static final int search_result=0x7f030008;
     }
     public static final class menu {
         public static final int course=0x7f090000;
@@ -255,6 +264,7 @@ containing a value of this type.
         public static final int login=0x7f090002;
         public static final int main=0x7f090003;
         public static final int search=0x7f090004;
+        public static final int user=0x7f090005;
     }
     public static final class string {
         public static final int JSON_error_message=0x7f06001b;
@@ -344,6 +354,7 @@ containing a value of this type.
         public static final int title_activity_hole=0x7f06001d;
         public static final int title_activity_login=0x7f060018;
         public static final int title_activity_search=0x7f060020;
+        public static final int title_activity_user=0x7f060021;
     }
     public static final class style {
         /** 

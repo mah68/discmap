@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.cary.discmap.R;
-import com.cary.discmap.server.ServerCommentUserLookupTask;
 
 public class CommentAdapter extends ArrayAdapter<Comment> {
 	Context context; 
@@ -46,10 +45,7 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         }
         
         Comment comment = data[position];
-        // another async task to lookup user from id
-        if(holder.user.getText() != comment.user) {
-        	new ServerCommentUserLookupTask(holder.user).execute(Integer.parseInt(comment.user));
-        }
+        holder.user.setText(comment.user);
         holder.date.setText(comment.date);
         holder.comment.setText(comment.comment);
         

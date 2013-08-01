@@ -49,6 +49,18 @@ public class MainActivity extends Activity {
 			
 		});
 		
+		Button testProfile = (Button) findViewById(R.id.testProfileMainButton);
+		testProfile.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent(getApplicationContext(), UserActivity.class);
+				i.putExtra("user", 7);
+				startActivity(i);
+			}
+			
+		});
+		
 		Button search = (Button) findViewById(R.id.searchCoursesMainButton);
 		search.setOnClickListener(new OnClickListener() {
 			@Override

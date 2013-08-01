@@ -224,7 +224,7 @@ public class CourseActivity extends DiscActivity implements HoleLoader {
 					list.length()+" comments");
 			for (int i=list.length()-1; i >= 0 ; i--) {
 				JSONObject data = list.getJSONObject(i);
-				String user = data.getString("posted_by");
+				String user = data.getString("user");
 				String date = data.getString("post_time");
 				String comment = data.getString("comment_text");
 				
