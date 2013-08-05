@@ -50,8 +50,9 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResult> {
             holder = (ResultHolder) row.getTag();
         }
         
-        SearchResult result = data[position];
+        final SearchResult result = data[position];
         // another async task to lookup rating
+        //TODO find rating with JOIN instead of second server request
         new ServerSearchRatingTask(holder.rating).execute(result.course_id);
         holder.course.setText(result.course);
         
@@ -61,7 +62,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResult> {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(context, CourseActivity.class);
-				i.putExtra("course", 1);
+				i.putExtra("course", result.course_id);
 				context.startActivity(i);
 			}
         	

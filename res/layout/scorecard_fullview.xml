@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.cary.discmap.views.HeightGridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scorecardGridView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" 
+    android:columnWidth="25dp"
+    android:numColumns="18"
+    android:isScrollContainer="false"
+    android:verticalSpacing="5dp"
+    android:horizontalSpacing="5dp"
+    android:stretchMode="columnWidth"
+    android:gravity="center" />
